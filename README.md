@@ -1,50 +1,58 @@
-# Welcome to your Expo app 👋
+# Crossmint SDK React Native Demo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This demo showcases the [Crossmint SDK](https://github.com/Crossmint/crossmint-sdk) running in React Native using Expo's [DOM Components](https://docs.expo.dev/guides/dom-components/).
 
-## Get started
+## Overview
 
-1. Install dependencies
+- Proof of concept demonstrating Crossmint SDK web components in React Native
+- Leverages Expo's DOM Components and WebView for rendering
+- Not production-ready - use as reference implementation only
+
+## Features
+
+- Embedded Checkout integration
+- Wallet management
+- DOM Components rendering of web SDK
+
+## Getting Started
+
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Add environment variables to `.env`:
 
    ```bash
-    npx expo start
+   # payments
+   EXPO_PUBLIC_CLIENT_COLLECTION_API_KEY="PAYMENT_CLIENT_API_KEY"
+   EXPO_PUBLIC_COLLECTION_ID="COLLECTION_ID"
+
+   # wallets
+   EXPO_PUBLIC_CLIENT_WALLET_API_KEY="WALLET_CLIENT_API_KEY"
    ```
 
-In the output, you'll find options to open the app in a
+3. Run the app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npx expo start
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Limitations
 
-## Get a fresh project
+- Limited functionality compared to web SDK.
+- Some features may not work as expected.
+- WebView and DOM component restrictions apply.
+- Apple Pay integration requires additional setup.
 
-When you're ready, run:
+## Implementation Notes
 
-```bash
-npm run reset-project
-```
+- Uses Expo's DOM Components to render web SDK
+- WebView handles web component integration
+- Minimal styling matches native UI
+- Reference implementation only
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Disclaimer
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This is an experimental proof of concept. Do not use in production.
