@@ -1,9 +1,16 @@
-import { Text, View,  StyleSheet } from 'react-native';
+import { View, StyleSheet, Button } from "react-native";
+import { Link } from "expo-router";
 
-export default function Index() {
+export default function Home() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home screen</Text>
+      <Link href="/checkout" asChild>
+        <Button title="Embedded Checkout" />
+      </Link>
+
+      <Link href="/wallets" asChild>
+        <Button title="Wallets" />
+      </Link>
     </View>
   );
 }
@@ -11,11 +18,8 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: '#fff',
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16,
   },
 });
