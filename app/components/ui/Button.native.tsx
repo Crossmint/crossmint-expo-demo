@@ -1,5 +1,5 @@
-import { TouchableOpacity, Text, StyleSheet, type View } from "react-native";
 import { forwardRef } from "react";
+import { TouchableOpacity, Text, StyleSheet, type View } from "react-native";
 
 interface ButtonProps {
   onPress?: () => void;
