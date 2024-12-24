@@ -1,16 +1,28 @@
-import { View, StyleSheet, Button } from "react-native";
+import Button from "@/app/components/ui/Button.native";
 import { Link } from "expo-router";
+import { View, StyleSheet, Text } from "react-native";
 
 export default function Home() {
   return (
     <View style={styles.container}>
-      <Link href="/checkout" asChild>
-        <Button title="Embedded Checkout" />
-      </Link>
+      <View style={styles.content}>
+        <Text style={styles.title}>Crossmint Demo</Text>
+        <Text style={styles.subtitle}>
+          React Native + Expo + DOM Components
+        </Text>
 
-      <Link href="/wallets" asChild>
-        <Button title="Wallets" />
-      </Link>
+        <View style={styles.buttons}>
+          <Link href="/checkout" asChild>
+            <Button title="Embedded Checkout" />
+          </Link>
+
+          <View style={styles.spacer} />
+
+          <Link href="/wallets" asChild>
+            <Button title="Wallets" />
+          </Link>
+        </View>
+      </View>
     </View>
   );
 }
@@ -18,8 +30,28 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 16,
+    backgroundColor: "#fff",
+  },
+  content: {
+    padding: 20,
+    marginTop: "30%",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 40,
+  },
+  buttons: {
+    marginTop: 20,
+  },
+  spacer: {
+    height: 12,
   },
 });
