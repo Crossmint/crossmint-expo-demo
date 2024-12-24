@@ -1,10 +1,10 @@
 import CrossmintCheckout from "@/app/components/CrossmintCheckout";
 
-const apiKey = process.env.EXPO_PUBLIC_CLIENT_API_KEY as string;
+const apiKey = process.env.EXPO_PUBLIC_CLIENT_COLLECTION_API_KEY as string;
 const collectionId = process.env.EXPO_PUBLIC_COLLECTION_ID as string;
 
 if (!apiKey) {
-  throw new Error("EXPO_PUBLIC_CLIENT_API_KEY is not set");
+  throw new Error("EXPO_PUBLIC_CLIENT_COLLECTION_API_KEY is not set");
 }
 
 if (!collectionId) {
@@ -18,6 +18,7 @@ export default function CheckoutPage() {
       collectionId={collectionId}
       dom={{
         // enableApplePay: true,
+        originWhitelist: ["*"],
         scrollEnabled: false,
       }}
     />

@@ -3,7 +3,17 @@
 import {
   CrossmintProvider,
   CrossmintEmbeddedCheckout,
+  useCrossmintCheckout,
+  CrossmintCheckoutProvider,
 } from "@crossmint/client-sdk-react-ui";
+
+function CheckoutStatus() {
+  const { order } = useCrossmintCheckout();
+  console.log({ order: order ?? {} });
+  console.log({ payment: order?.payment ?? {} });
+
+  return null;
+}
 
 export default function CrossmintCheckout({
   apiKey,
@@ -22,19 +32,22 @@ export default function CrossmintCheckout({
       }}
     >
       <CrossmintProvider apiKey={apiKey}>
-        <CrossmintEmbeddedCheckout
-          lineItems={{
-            collectionLocator: `crossmint:${collectionId}`,
-            callData: {
-              totalPrice: "0.001",
-              quantity: 1,
-            },
-          }}
-          payment={{
-            crypto: { enabled: false },
-            fiat: { enabled: true },
-          }}
-        />
+        <CrossmintCheckoutProvider>
+          <CrossmintEmbeddedCheckout
+            lineItems={{
+              collectionLocator: `crossmint:${collectionId}`,
+              callData: {
+                totalPrice: "0.001",
+                quantity: 1,
+              },
+            }}
+            payment={{
+              crypto: { enabled: false },
+              fiat: { enabled: true },
+            }}
+          />
+          <CheckoutStatus />
+        </CrossmintCheckoutProvider>
       </CrossmintProvider>
     </div>
   );
