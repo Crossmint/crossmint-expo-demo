@@ -1,4 +1,4 @@
-import Button from "@/app/components/ui/Button";
+import Button from "@/app/components/ui/Button.native";
 import { Link } from "expo-router";
 import { View, StyleSheet, Text } from "react-native";
 

@@ -1,67 +1,51 @@
-import { TouchableOpacity, Text, StyleSheet, type View } from "react-native";
-import { forwardRef } from "react";
+"use client";
 
-interface ButtonProps {
-  onPress?: () => void;
-  title: string;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
-  disabled?: boolean;
 }
 
-const Button = forwardRef<View, ButtonProps>(
-  ({ onPress, title, variant = "primary", disabled }, ref) => {
-    return (
-      <TouchableOpacity
-        ref={ref}
-        style={[
-          styles.button,
-          variant === "secondary" && styles.buttonSecondary,
-          disabled && styles.buttonDisabled,
-        ]}
-        onPress={onPress}
-        disabled={disabled}
-      >
-        <Text
-          style={[
-            styles.text,
-            variant === "secondary" && styles.textSecondary,
-            disabled && styles.textDisabled,
-          ]}
-        >
-          {title}
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-);
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#00C853",
-    padding: 16,
-    borderRadius: 8,
+export default function Button({
+  onClick,
+  children,
+  variant = "primary",
+  style,
+  ...props
+}: ButtonProps) {
+  const baseStyles: React.CSSProperties = {
+    padding: "16px",
+    borderRadius: "8px",
     width: "100%",
     alignItems: "center",
-  },
-  buttonSecondary: {
-    backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: "#00C853",
-  },
-  buttonDisabled: {
-    backgroundColor: "#E0E0E0",
-  },
-  text: {
-    color: "white",
-    fontSize: 16,
+    fontSize: "16px",
     fontWeight: "500",
-  },
-  textSecondary: {
-    color: "#00C853",
-  },
-  textDisabled: {
-    color: "#9E9E9E",
-  },
-});
+    border: "none",
+    cursor: "pointer",
+  };
 
-export default Button;
+  const variantStyles = {
+    primary: {
+      backgroundColor: "#00C853",
+      color: "white",
+    },
+    secondary: {
+      backgroundColor: "transparent",
+      color: "#00C853",
+      border: "1px solid #00C853",
+    },
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        ...baseStyles,
+        ...variantStyles[variant],
+        ...style,
+      }}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
