@@ -1,21 +1,19 @@
-import { View, Text, StyleSheet } from "react-native";
+import CrossmintWallet from "@/app/components/CrossmintWallet";
+
+const apiKey = process.env.EXPO_PUBLIC_CLIENT_API_KEY as string;
+
+if (!apiKey) {
+  throw new Error("EXPO_PUBLIC_CLIENT_API_KEY is not set");
+}
 
 export default function WalletsPage() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Hello Wallets!</Text>
-    </View>
+    <CrossmintWallet
+      apiKey={apiKey}
+      dom={{
+        // enableApplePay: true,
+        scrollEnabled: false,
+      }}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-});
