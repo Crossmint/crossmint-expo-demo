@@ -7,27 +7,35 @@ import {
 
 export default function CrossmintCheckout({
   apiKey,
-  collectionLocator,
+  collectionId,
 }: {
-  dom?: import("expo/dom").DOMProps;
   apiKey: string;
-  collectionLocator: string;
+  collectionId: string;
+  dom?: import("expo/dom").DOMProps;
 }) {
   return (
-    <CrossmintProvider apiKey={apiKey}>
-      <CrossmintEmbeddedCheckout
-        lineItems={{
-          collectionLocator: collectionLocator,
-          callData: {
-            totalPrice: "0.001",
-            quantity: 1,
-          },
-        }}
-        payment={{
-          crypto: { enabled: false },
-          fiat: { enabled: true },
-        }}
-      />
-    </CrossmintProvider>
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        padding: "16px",
+      }}
+    >
+      <CrossmintProvider apiKey={apiKey}>
+        <CrossmintEmbeddedCheckout
+          lineItems={{
+            collectionLocator: `crossmint:${collectionId}`,
+            callData: {
+              totalPrice: "0.001",
+              quantity: 1,
+            },
+          }}
+          payment={{
+            crypto: { enabled: false },
+            fiat: { enabled: true },
+          }}
+        />
+      </CrossmintProvider>
+    </div>
   );
 }
