@@ -6,9 +6,11 @@ export default function WalletsWebView() {
     <View style={styles.container}>
       <WebView
         source={{
-          uri: "https://jcurbelo.ngrok.app/wallets",
+          uri: "https://crossmint-expo-demo-web.vercel.app/wallets",
         }}
         style={styles.webview}
+        originWhitelist={["*"]}
+        scrollEnabled={false}
       />
     </View>
   );
@@ -22,4 +24,4 @@ const styles = StyleSheet.create({
   webview: {
     flex: 1,
   },
-}); 
+});
