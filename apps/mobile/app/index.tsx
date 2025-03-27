@@ -1,4 +1,4 @@
-import Button from "@/app/components/ui/Button.native";
+import Button from "./components/ui/Button";
 import { Link } from "expo-router";
 import { View, StyleSheet, Text } from "react-native";
 
@@ -6,20 +6,32 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Crossmint Demo</Text>
-        <Text style={styles.subtitle}>
-          React Native + Expo + DOM Components
-        </Text>
+        <Text style={styles.title}>Crossmint Expo Demo</Text>
+        <Text style={styles.subtitle}>Integration Examples</Text>
 
         <View style={styles.buttons}>
-          <Link href="/checkout" asChild>
-            <Button title="Embedded Checkout" />
+          <Text style={styles.sectionTitle}>Payments</Text>
+          <Link href="./(dom)/payments" asChild>
+            <Button title="DOM Components" />
           </Link>
 
           <View style={styles.spacer} />
 
-          <Link href="/wallets" asChild>
-            <Button title="Wallets" />
+          <Link href="./(webview)/payments" asChild>
+            <Button title="WebView" />
+          </Link>
+
+          <View style={styles.spacer} />
+
+          <Text style={styles.sectionTitle}>Wallets</Text>
+          <Link href="./(dom)/wallets" asChild>
+            <Button title="DOM Components" />
+          </Link>
+
+          <View style={styles.spacer} />
+
+          <Link href="./(webview)/wallets" asChild>
+            <Button title="WebView" />
           </Link>
         </View>
       </View>
@@ -50,6 +62,12 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 12,
+    color: "#333",
   },
   spacer: {
     height: 12,

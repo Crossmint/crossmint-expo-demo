@@ -15,7 +15,7 @@ function CheckoutStatus() {
   return null;
 }
 
-export default function CrossmintCheckout({
+export default function CrossmintPayment({
   apiKey,
   collectionId,
 }: {

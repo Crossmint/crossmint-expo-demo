@@ -1,4 +1,4 @@
-import CrossmintCheckout from "@/app/components/CrossmintCheckout";
+import CrossmintPayment from "@/app/components/CrossmintPayment";
 
 const apiKey = process.env.EXPO_PUBLIC_CLIENT_COLLECTION_API_KEY as string;
 const collectionId = process.env.EXPO_PUBLIC_COLLECTION_ID as string;
@@ -11,9 +11,9 @@ if (!collectionId) {
   throw new Error("EXPO_PUBLIC_COLLECTION_ID is not set");
 }
 
-export default function CheckoutPage() {
+export default function PaymentsPage() {
   return (
-    <CrossmintCheckout
+    <CrossmintPayment
       apiKey={apiKey}
       collectionId={collectionId}
       dom={{
