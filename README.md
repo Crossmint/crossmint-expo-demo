@@ -55,14 +55,14 @@ crossmint-expo-demo/
 
    ```bash
    cd apps/mobile
-   pnpm start
+   pnpm mobile:ios
    ```
 
 4. Run the web app:
 
    ```bash
    cd apps/web
-   pnpm dev
+   pnpm web:dev
    ```
 
 ## Integration Approaches

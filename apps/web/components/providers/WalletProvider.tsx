@@ -19,6 +19,7 @@ export default function WalletProvider({
   return (
     <CrossmintProvider apiKey={clientApiKey}>
       <CrossmintAuthProvider
+        loginMethods={["email"]}
         embeddedWallets={{
           type: "solana-smart-wallet",
           createOnLogin: "all-users",

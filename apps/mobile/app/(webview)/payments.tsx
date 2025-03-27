@@ -6,9 +6,12 @@ export default function PaymentsWebView() {
     <View style={styles.container}>
       <WebView
         source={{
-          uri: "https://jcurbelo.ngrok.app/payments",
+          uri: "https://crossmint-expo-demo-web.vercel.app/payments",
         }}
         style={styles.webview}
+        enableApplePay={true}
+        scrollEnabled={false}
+        originWhitelist={["*"]}
       />
     </View>
   );
