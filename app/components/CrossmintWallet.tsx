@@ -13,7 +13,7 @@ function AuthButton() {
 
   return (
     <div>
-      {jwt == null ? (
+      {!jwt ? (
         <Button onClick={login}>Login</Button>
       ) : (
         <Button onClick={logout} variant="secondary">
@@ -37,11 +37,11 @@ function Wallet() {
   return (
     <div style={{ marginTop: "20px" }}>
       {status === "loading-error" && error && (
-        <div style={{ ...textStyle, color: "red" }}>Error: {error.message}</div>
+        <div style={{ ...textStyle, color: "red" }}>Error: {error}</div>
       )}
       {status === "in-progress" && <div style={textStyle}>Loading...</div>}
       {status === "loaded" && wallet && (
-        <div style={textStyle}>Wallet: {wallet.address}</div>
+        <div style={textStyle}>Wallet: {wallet.getAddress()}</div>
       )}
       {status === "not-loaded" && (
         <div style={textStyle}>Wallet not loaded</div>
@@ -60,8 +60,7 @@ export default function CrossmintWallet({
     <CrossmintProvider apiKey={apiKey}>
       <CrossmintAuthProvider
         embeddedWallets={{
-          type: "evm-smart-wallet",
-          defaultChain: "base-sepolia",
+          type: "solana-smart-wallet",
           createOnLogin: "all-users",
         }}
       >
