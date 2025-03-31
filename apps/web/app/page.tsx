@@ -7,10 +7,10 @@ export default function Home() {
 
       <div className="flex gap-4 items-center flex-col sm:flex-row">
         <Link
-          href="/wallets"
+          href="/auth"
           className="flex items-center justify-center w-full sm:w-[200px] h-[52px] rounded-xl bg-[#00C853] text-white font-medium text-base transition-opacity hover:opacity-90"
         >
-          Wallets
+          Auth
         </Link>
         <Link
           href="/payments"

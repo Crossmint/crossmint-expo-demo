@@ -11,7 +11,7 @@ if (!clientApiKey) {
   throw new Error("NEXT_PUBLIC_CLIENT_WALLET_API_KEY is not set");
 }
 
-export default function WalletProvider({
+export default function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -19,6 +19,7 @@ export default function WalletProvider({
   return (
     <CrossmintProvider apiKey={clientApiKey}>
       <CrossmintAuthProvider
+        loginMethods={["email", "google", "twitter", "farcaster"]}
         embeddedWallets={{
           type: "solana-smart-wallet",
           createOnLogin: "all-users",
