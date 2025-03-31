@@ -1,17 +1,12 @@
-import CrossmintWallet from "@/app/components/CrossmintWallet";
-
-const apiKey = process.env.EXPO_PUBLIC_CLIENT_WALLET_API_KEY as string;
-
-if (!apiKey) {
-  throw new Error("EXPO_PUBLIC_CLIENT_WALLET_API_KEY is not set");
-}
+import CrossmintWallet from "@/app/components/web/CrossmintWallet";
+import { walletApiKey } from "@/src/utils/config";
 
 export default function WalletsPage() {
   return (
     <CrossmintWallet
-      apiKey={apiKey}
+      apiKey={walletApiKey}
       dom={{
-        // enableApplePay: true,
+        enableApplePay: true,
         originWhitelist: ["*"],
         scrollEnabled: false,
       }}
