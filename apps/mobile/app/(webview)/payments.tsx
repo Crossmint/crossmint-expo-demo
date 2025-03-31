@@ -1,3 +1,4 @@
+import { crossmintOriginUrl } from "@/src/utils/config";
 import { View, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 
@@ -6,7 +7,7 @@ export default function PaymentsWebView() {
     <View style={styles.container}>
       <WebView
         source={{
-          uri: "https://crossmint-expo-demo-web.vercel.app/payments",
+          uri: `${crossmintOriginUrl}payments`,
         }}
         enableApplePay={true}
         style={styles.webview}

@@ -1,23 +1,26 @@
-import { View, StyleSheet } from "react-native";
-import { WebView } from "react-native-webview";
+import Auth from "@/app/components/native/Auth";
+import Wallet from "@/app/components/native/Wallet";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 export default function WalletsWebView() {
+  const [jwt, setJwt] = useState<string | undefined>();
+
+  const handleLoginSuccess = (token: string) => {
+    setJwt(token);
+  };
+
+  const handleLogout = () => {
+    setJwt(undefined);
+  };
+
   return (
     <View style={styles.container}>
-      <WebView
-        source={{
-          uri: "https://crossmint-expo-demo-web.vercel.app/wallets",
-        }}
-        style={styles.webview}
-        originWhitelist={["*"]}
-        scrollEnabled={false}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        sharedCookiesEnabled={true} // iOS
-        thirdPartyCookiesEnabled={true} // Android
-        cacheEnabled={true}
-        userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-      />
+      {!jwt ? (
+        <Auth onLoginSuccess={handleLoginSuccess} onLogout={handleLogout} />
+      ) : (
+        <Wallet jwt={jwt} onLogout={handleLogout} />
+      )}
     </View>
   );
 }
@@ -26,8 +29,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  webview: {
-    flex: 1,
   },
 });
