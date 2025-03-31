@@ -22,7 +22,7 @@ export default function AuthProvider({
         loginMethods={["email", "google", "twitter", "farcaster"]}
         embeddedWallets={{
           type: "solana-smart-wallet",
-          createOnLogin: "off",
+          createOnLogin: "all-users",
         }}
       >
         {children}

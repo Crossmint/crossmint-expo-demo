@@ -18,4 +18,4 @@ if (!walletApiKey) {
 
 if (!collectionId) {
   throw new Error("EXPO_PUBLIC_COLLECTION_ID is not set");
-} 
+}

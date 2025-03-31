@@ -6,14 +6,53 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
+import type { GestureResponderEvent } from "react-native";
+import { useCallback } from "react";
 
 interface WalletProps {
   jwt: string;
-  onLogout?: () => void;
+  onLogout: () => void;
+}
+
+function LogoutButton({ onLogout }: { onLogout: () => void }) {
+  return (
+    <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
+      <Text style={styles.logoutButtonText}>Logout</Text>
+    </TouchableOpacity>
+  );
+}
+
+function ErrorView({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry: () => void;
+}) {
+  return (
+    <View style={styles.errorContainer}>
+      <Text style={styles.errorTitle}>Error</Text>
+      <Text style={styles.errorText}>{message}</Text>
+      <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
+        <Text style={styles.retryButtonText}>Retry</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 export default function Wallet({ jwt, onLogout }: WalletProps) {
-  const { wallet, walletsService } = useWallet(
+  const {
+    wallet,
+    isLoading,
+    isLoadingService,
+    isLoadingWallet,
+    error,
+    isError,
+    serviceError,
+    walletError,
+    isConnected,
+    reload,
+  } = useWallet(
     "solana-smart-wallet",
     {
       adminSigner: undefined,
@@ -22,11 +61,54 @@ export default function Wallet({ jwt, onLogout }: WalletProps) {
     jwt
   );
 
-  if (!wallet) {
+  const handleReload = useCallback(
+    (_event?: GestureResponderEvent) => {
+      reload();
+    },
+    [reload]
+  );
+
+  if (isError) {
+    const errorMessage =
+      error?.message ||
+      (serviceError
+        ? "Failed to initialize wallet service"
+        : walletError
+        ? "Failed to load wallet"
+        : "Unknown error");
+
+    return (
+      <View style={styles.container}>
+        <ErrorView message={errorMessage} onRetry={handleReload} />
+        <LogoutButton onLogout={onLogout} />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    const loadingMessage = isLoadingService
+      ? "Initializing wallet service..."
+      : isLoadingWallet
+      ? "Loading wallet..."
+      : "Processing...";
+
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.loadingText}>Loading wallet...</Text>
+        <Text style={styles.loadingText}>{loadingMessage}</Text>
+        <LogoutButton onLogout={onLogout} />
+      </View>
+    );
+  }
+
+  if (!isConnected || !wallet) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.infoText}>Wallet not connected</Text>
+        <TouchableOpacity style={styles.connectButton} onPress={handleReload}>
+          <Text style={styles.connectButtonText}>Connect Wallet</Text>
+        </TouchableOpacity>
+        <LogoutButton onLogout={onLogout} />
       </View>
     );
   }
@@ -39,11 +121,11 @@ export default function Wallet({ jwt, onLogout }: WalletProps) {
         <Text style={styles.infoText}>Type: Solana Smart Wallet</Text>
         <Text style={styles.infoText}>Status: Active</Text>
 
-        {onLogout && (
-          <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
-            <Text style={styles.logoutButtonText}>Logout</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity style={styles.refreshButton} onPress={handleReload}>
+          <Text style={styles.refreshButtonText}>Refresh Wallet</Text>
+        </TouchableOpacity>
+
+        <LogoutButton onLogout={onLogout} />
       </View>
     </View>
   );
@@ -91,6 +173,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoutButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  errorContainer: {
+    backgroundColor: "#ffebee",
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 16,
+  },
+  errorTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#d32f2f",
+    marginBottom: 8,
+  },
+  errorText: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: "#2196f3",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  retryButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  refreshButton: {
+    marginTop: 16,
+    backgroundColor: "#4caf50",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  refreshButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  connectButton: {
+    marginTop: 16,
+    marginBottom: 16,
+    backgroundColor: "#2196f3",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  connectButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },
