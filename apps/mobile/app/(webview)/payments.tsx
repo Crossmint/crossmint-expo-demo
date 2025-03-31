@@ -1,8 +1,10 @@
+import useUserAgent from "@/app/hooks/useUserAgent";
 import { crossmintOriginUrl } from "@/src/utils/config";
 import { View, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 
 export default function PaymentsWebView() {
+  const { userAgent } = useUserAgent();
   return (
     <View style={styles.container}>
       <WebView
@@ -18,6 +20,7 @@ export default function PaymentsWebView() {
         sharedCookiesEnabled={true} // iOS
         thirdPartyCookiesEnabled={true} // Android
         cacheEnabled={true}
+        userAgent={userAgent}
       />
     </View>
   );
