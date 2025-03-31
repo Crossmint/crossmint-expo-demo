@@ -11,15 +11,6 @@ import { useCallback } from "react";
 
 interface WalletProps {
   jwt: string;
-  onLogout: () => void;
-}
-
-function LogoutButton({ onLogout }: { onLogout: () => void }) {
-  return (
-    <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
-      <Text style={styles.logoutButtonText}>Logout</Text>
-    </TouchableOpacity>
-  );
 }
 
 function ErrorView({
@@ -40,7 +31,7 @@ function ErrorView({
   );
 }
 
-export default function Wallet({ jwt, onLogout }: WalletProps) {
+export default function Wallet({ jwt }: WalletProps) {
   const {
     wallet,
     isLoading,
@@ -80,7 +71,6 @@ export default function Wallet({ jwt, onLogout }: WalletProps) {
     return (
       <View style={styles.container}>
         <ErrorView message={errorMessage} onRetry={handleReload} />
-        <LogoutButton onLogout={onLogout} />
       </View>
     );
   }
@@ -96,7 +86,6 @@ export default function Wallet({ jwt, onLogout }: WalletProps) {
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
         <Text style={styles.loadingText}>{loadingMessage}</Text>
-        <LogoutButton onLogout={onLogout} />
       </View>
     );
   }
@@ -108,7 +97,6 @@ export default function Wallet({ jwt, onLogout }: WalletProps) {
         <TouchableOpacity style={styles.connectButton} onPress={handleReload}>
           <Text style={styles.connectButtonText}>Connect Wallet</Text>
         </TouchableOpacity>
-        <LogoutButton onLogout={onLogout} />
       </View>
     );
   }
@@ -124,8 +112,6 @@ export default function Wallet({ jwt, onLogout }: WalletProps) {
         <TouchableOpacity style={styles.refreshButton} onPress={handleReload}>
           <Text style={styles.refreshButtonText}>Refresh Wallet</Text>
         </TouchableOpacity>
-
-        <LogoutButton onLogout={onLogout} />
       </View>
     </View>
   );
