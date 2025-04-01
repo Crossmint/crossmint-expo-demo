@@ -23,8 +23,6 @@ global.fetch = async (input, initOptions) => {
       // Use configurable origin URL
       Origin: crossmintOriginUrl.replace(/\/$/, ""),
     };
-    console.log("newInit", newInit);
-    console.log("Adding Origin header to Crossmint request:", url);
     return originalFetch(input, newInit);
   }
 

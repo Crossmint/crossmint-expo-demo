@@ -25,19 +25,23 @@ export default function Auth({ onLoginSuccess, onLogout }: AuthProps) {
         scrollEnabled={false}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}
         cacheEnabled={true}
         userAgent={userAgent}
         onMessage={(event) => {
-          const { type, jwt } = JSON.parse(event.nativeEvent.data);
-          if (type === "login_success") {
-            onLoginSuccess(jwt);
-            return;
-          }
-          if (type === "logout") {
-            onLogout();
-            return;
+          console.log("Received message:", event.nativeEvent.data);
+          try {
+            const message = JSON.parse(event.nativeEvent.data);
+            if (message.type === "login_success") {
+              onLoginSuccess(message.jwt);
+              return;
+            }
+            if (message.type === "logout") {
+              onLogout();
+              return;
+            }
+          } catch (error) {
+            console.log("Error parsing message:", error);
           }
         }}
       />

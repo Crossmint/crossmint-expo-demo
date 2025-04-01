@@ -17,8 +17,7 @@ export default function PaymentsWebView() {
         scrollEnabled={false}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        sharedCookiesEnabled={true} // iOS
-        thirdPartyCookiesEnabled={true} // Android
+        thirdPartyCookiesEnabled={true}
         cacheEnabled={true}
         userAgent={userAgent}
       />
