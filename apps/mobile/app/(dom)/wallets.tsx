@@ -6,7 +6,7 @@ export default function WalletsPage() {
     <CrossmintWallet
       apiKey={walletApiKey}
       dom={{
-        enableApplePay: true,
+        // enableApplePay: true,
         originWhitelist: ["*"],
         scrollEnabled: false,
       }}

@@ -7,7 +7,7 @@ export default function PaymentsPage() {
       apiKey={collectionApiKey}
       collectionId={collectionId}
       dom={{
-        enableApplePay: true,
+        // enableApplePay: true,
         originWhitelist: ["*"],
         scrollEnabled: false,
       }}
