@@ -8,6 +8,9 @@ export const crossmintOriginUrl =
   process.env.EXPO_PUBLIC_CROSSMINT_ORIGIN_URL ??
   "https://crossmint-expo-demo-web.vercel.app/";
 
+export const usdcDevnetTokenMint =
+  "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU";
+
 if (!collectionApiKey) {
   throw new Error("EXPO_PUBLIC_CLIENT_COLLECTION_API_KEY is not set");
 }
