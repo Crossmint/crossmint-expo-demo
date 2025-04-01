@@ -1,29 +1,13 @@
 import type { WalletTypeToArgs } from "@crossmint/wallets-sdk";
 import { useQuery } from "@tanstack/react-query";
 import { CrossmintWallets } from "@crossmint/wallets-sdk";
-import { useState, useCallback } from "react";
 import { walletApiKey } from "@/src/utils/config";
-
-interface SignableWallet {
-  signMessage(message: string): Promise<string>;
-}
-
-function isSignableWallet(wallet: unknown): wallet is SignableWallet {
-  return (
-    !!wallet &&
-    typeof (wallet as { signMessage?: (message: string) => Promise<string> })
-      .signMessage === "function"
-  );
-}
 
 export default function useWallet<T extends keyof WalletTypeToArgs>(
   type: T,
   args: WalletTypeToArgs[T],
   jwt?: string
 ) {
-  const [signLoading, setSignLoading] = useState(false);
-  const [signError, setSignError] = useState<Error | null>(null);
-
   const {
     data: walletsService,
     isLoading: isLoadingService,
@@ -36,7 +20,8 @@ export default function useWallet<T extends keyof WalletTypeToArgs>(
         return null;
       }
 
-      console.log("jwt", jwt);
+      console.log("Jwt received successfully");
+      console.log({ jwt });
       return CrossmintWallets.from({
         apiKey: walletApiKey,
         jwt,
@@ -57,10 +42,11 @@ export default function useWallet<T extends keyof WalletTypeToArgs>(
       if (!walletsService) {
         return null;
       }
-      console.log("getting wallet");
+      console.log("Getting wallet");
       try {
         const result = await walletsService.getOrCreateWallet(type, args);
         console.log("Wallet retrieved successfully");
+        console.log({ wallet: result.getAddress() });
         return result;
       } catch (error) {
         console.error("Wallet error details:", JSON.stringify(error));
@@ -70,35 +56,9 @@ export default function useWallet<T extends keyof WalletTypeToArgs>(
     enabled: !!walletsService,
   });
 
-  const isLoading = isLoadingService || isLoadingWallet || signLoading;
-  const error = serviceError ?? walletError ?? signError;
-  const isError = isServiceError || isWalletError || !!signError;
-
-  const signMessage = useCallback(
-    async (message: string) => {
-      if (!wallet) {
-        return null;
-      }
-
-      setSignLoading(true);
-      setSignError(null);
-
-      try {
-        if (isSignableWallet(wallet)) {
-          const signature = await wallet.signMessage(message);
-          return signature;
-        }
-        throw new Error("Wallet does not support message signing");
-      } catch (error) {
-        console.error("Error signing message:", error);
-        setSignError(error instanceof Error ? error : new Error(String(error)));
-        return null;
-      } finally {
-        setSignLoading(false);
-      }
-    },
-    [wallet]
-  );
+  const isLoading = isLoadingService || isLoadingWallet;
+  const error = serviceError ?? walletError;
+  const isError = isServiceError || isWalletError;
 
   return {
     walletsService,
@@ -107,7 +67,6 @@ export default function useWallet<T extends keyof WalletTypeToArgs>(
     isLoading,
     isLoadingService,
     isLoadingWallet,
-    signLoading,
 
     error,
     isError,
@@ -115,11 +74,9 @@ export default function useWallet<T extends keyof WalletTypeToArgs>(
     isServiceError,
     walletError,
     isWalletError,
-    signError,
 
     isConnected: !!wallet && !isLoading && !isError,
 
     reload: refetchWallet,
-    signMessage,
   };
 }

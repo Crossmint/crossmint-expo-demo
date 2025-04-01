@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// Import utilities to setup fetch interceptor
+
+// Import utilities
 import "@/src/utils";
 
 const queryClient = new QueryClient();
