@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import type { GestureResponderEvent } from "react-native";
 import { useCallback, useState } from "react";
-import createTokenTransferTransaction from "@/src/utils/transaction";
+import { createTokenTransferTransaction } from "@/src/utils";
 import { usdcDevnetTokenMint } from "@/src/utils/config";
 
 interface WalletProps {
