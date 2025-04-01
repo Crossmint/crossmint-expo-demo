@@ -1,3 +1,4 @@
+import useUserAgent from "@/app/hooks/useUserAgent";
 import { crossmintOriginUrl } from "@/src/utils/config";
 import { useRef } from "react";
 import { StyleSheet, View } from "react-native";
@@ -10,6 +11,7 @@ interface AuthProps {
 
 export default function Auth({ onLoginSuccess, onLogout }: AuthProps) {
   const webViewRef = useRef<WebView | null>(null);
+  const { userAgent } = useUserAgent();
 
   return (
     <View style={styles.container}>
@@ -23,19 +25,23 @@ export default function Auth({ onLoginSuccess, onLogout }: AuthProps) {
         scrollEnabled={false}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}
         cacheEnabled={true}
-        userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        userAgent={userAgent}
         onMessage={(event) => {
-          const { type, jwt } = JSON.parse(event.nativeEvent.data);
-          if (type === "login_success") {
-            onLoginSuccess(jwt);
-            return;
-          }
-          if (type === "logout") {
-            onLogout();
-            return;
+          console.log("Received message:", event.nativeEvent.data);
+          try {
+            const message = JSON.parse(event.nativeEvent.data);
+            if (message.type === "login_success") {
+              onLoginSuccess(message.jwt);
+              return;
+            }
+            if (message.type === "logout") {
+              onLogout();
+              return;
+            }
+          } catch (error) {
+            console.log("Error parsing message:", error);
           }
         }}
       />

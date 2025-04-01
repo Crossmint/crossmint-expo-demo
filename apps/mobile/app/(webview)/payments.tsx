@@ -1,8 +1,10 @@
+import useUserAgent from "@/app/hooks/useUserAgent";
 import { crossmintOriginUrl } from "@/src/utils/config";
 import { View, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 
 export default function PaymentsWebView() {
+  const { userAgent } = useUserAgent();
   return (
     <View style={styles.container}>
       <WebView
@@ -15,10 +17,9 @@ export default function PaymentsWebView() {
         scrollEnabled={false}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        sharedCookiesEnabled={true} // iOS
-        thirdPartyCookiesEnabled={true} // Android
+        thirdPartyCookiesEnabled={true}
         cacheEnabled={true}
-        userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        userAgent={userAgent}
       />
     </View>
   );
