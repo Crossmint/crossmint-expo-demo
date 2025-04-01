@@ -2,19 +2,25 @@ import useUserAgent from "@/app/hooks/useUserAgent";
 import { crossmintOriginUrl } from "@/src/utils/config";
 import { useRef } from "react";
 import { StyleSheet, View } from "react-native";
+import type { ViewStyle } from "react-native";
 import { WebView } from "react-native-webview";
 
 interface AuthProps {
   onLoginSuccess: (jwt: string) => void;
   onLogout: () => void;
+  containerStyle?: ViewStyle;
 }
 
-export default function Auth({ onLoginSuccess, onLogout }: AuthProps) {
+export default function Auth({
+  onLoginSuccess,
+  onLogout,
+  containerStyle,
+}: AuthProps) {
   const webViewRef = useRef<WebView | null>(null);
   const { userAgent } = useUserAgent();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <WebView
         ref={webViewRef}
         source={{

@@ -16,8 +16,12 @@ export default function WalletsWebView() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.authContainer}>
-        <Auth onLoginSuccess={handleLoginSuccess} onLogout={handleLogout} />
+      <View style={jwt ? styles.authContainerSmall : styles.authContainerFull}>
+        <Auth
+          onLoginSuccess={handleLoginSuccess}
+          onLogout={handleLogout}
+          containerStyle={jwt ? styles.authCompactStyle : undefined}
+        />
       </View>
 
       {jwt && <Wallet jwt={jwt} />}
@@ -30,7 +34,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  authContainer: {
+  authContainerFull: {
     flex: 1,
+  },
+  authContainerSmall: {
+    height: 200, // Fixed height when logged in
+  },
+  authCompactStyle: {
+    height: "100%",
   },
 });

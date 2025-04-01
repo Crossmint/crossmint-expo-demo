@@ -5,9 +5,12 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import type { GestureResponderEvent } from "react-native";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { createTokenTransferTransaction } from "@/src/utils";
+import { usdcDevnetTokenMint } from "@/src/utils/config";
 
 interface WalletProps {
   jwt: string;
@@ -52,12 +55,42 @@ export default function Wallet({ jwt }: WalletProps) {
     jwt
   );
 
+  const [recipientAddress, setRecipientAddress] = useState("");
+  const [amount, setAmount] = useState("");
+
   const handleReload = useCallback(
     (_event?: GestureResponderEvent) => {
       reload();
     },
     [reload]
   );
+
+  const handleTransfer = useCallback(async () => {
+    if (!wallet) {
+      return;
+    }
+
+    try {
+      const transaction = await createTokenTransferTransaction(
+        wallet.getAddress(),
+        recipientAddress,
+        usdcDevnetTokenMint,
+        Number(amount)
+      );
+
+      console.log("Transaction created");
+      console.log({ transaction });
+
+      const result = await wallet.sendTransaction({
+        transaction,
+      });
+
+      console.log("Transaction sent");
+      console.log({ result });
+    } catch (error) {
+      console.error("Transfer error:", error);
+    }
+  }, [recipientAddress, amount, wallet]);
 
   if (isError) {
     const errorMessage =
@@ -111,6 +144,31 @@ export default function Wallet({ jwt }: WalletProps) {
 
         <TouchableOpacity style={styles.refreshButton} onPress={handleReload}>
           <Text style={styles.refreshButtonText}>Refresh Wallet</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.transferContainer}>
+        <Text style={styles.title}>Transfer USDC</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Recipient wallet address"
+          value={recipientAddress}
+          onChangeText={setRecipientAddress}
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Amount (USDC)"
+          value={amount}
+          onChangeText={setAmount}
+          keyboardType="numeric"
+        />
+        <TouchableOpacity
+          style={styles.sendButton}
+          onPress={handleTransfer}
+          disabled={!recipientAddress.trim() || !amount.trim()}
+        >
+          <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -209,6 +267,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   connectButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  transferContainer: {
+    backgroundColor: "#f8f9fa",
+    borderRadius: 10,
+    padding: 16,
+    marginTop: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  input: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    backgroundColor: "#fff",
+    fontSize: 16,
+  },
+  sendButton: {
+    backgroundColor: "#7e57c2",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  sendButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },
