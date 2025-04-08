@@ -6,6 +6,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import type { GestureResponderEvent } from "react-native";
 import { useCallback, useState } from "react";
@@ -102,9 +105,18 @@ export default function Wallet({ jwt }: WalletProps) {
         : "Unknown error");
 
     return (
-      <View style={styles.container}>
-        <ErrorView message={errorMessage} onRetry={handleReload} />
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidContainer}
+      >
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <ErrorView message={errorMessage} onRetry={handleReload} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -116,62 +128,96 @@ export default function Wallet({ jwt }: WalletProps) {
       : "Processing...";
 
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.loadingText}>{loadingMessage}</Text>
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidContainer}
+      >
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#0000ff" />
+            <Text style={styles.loadingText}>{loadingMessage}</Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 
   if (!isConnected || !wallet) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.infoText}>Wallet not connected</Text>
-        <TouchableOpacity style={styles.connectButton} onPress={handleReload}>
-          <Text style={styles.connectButtonText}>Connect Wallet</Text>
-        </TouchableOpacity>
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidContainer}
+      >
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.loadingContainer}>
+            <Text style={styles.infoText}>Wallet not connected</Text>
+            <TouchableOpacity
+              style={styles.connectButton}
+              onPress={handleReload}
+            >
+              <Text style={styles.connectButtonText}>Connect Wallet</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.title}>Wallet Information</Text>
-        <Text style={styles.infoText}>Address: {wallet.getAddress()}</Text>
-        <Text style={styles.infoText}>Type: Solana Smart Wallet</Text>
-        <Text style={styles.infoText}>Status: Active</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.keyboardAvoidContainer}
+    >
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.infoContainer}>
+          <Text style={styles.title}>Wallet Information</Text>
+          <Text style={styles.infoText}>Address: {wallet.getAddress()}</Text>
+          <Text style={styles.infoText}>Type: Solana Smart Wallet</Text>
+          <Text style={styles.infoText}>Status: Active</Text>
 
-        <TouchableOpacity style={styles.refreshButton} onPress={handleReload}>
-          <Text style={styles.refreshButtonText}>Refresh Wallet</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.refreshButton} onPress={handleReload}>
+            <Text style={styles.refreshButtonText}>Refresh Wallet</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.transferContainer}>
-        <Text style={styles.title}>Transfer USDC</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Recipient wallet address"
-          value={recipientAddress}
-          onChangeText={setRecipientAddress}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Amount (USDC)"
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType="numeric"
-        />
-        <TouchableOpacity
-          style={styles.sendButton}
-          onPress={handleTransfer}
-          disabled={!recipientAddress.trim() || !amount.trim()}
-        >
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <View style={styles.transferContainer}>
+          <Text style={styles.title}>Transfer USDC</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Recipient wallet address"
+            value={recipientAddress}
+            onChangeText={setRecipientAddress}
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Amount (USDC)"
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="numeric"
+          />
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={handleTransfer}
+            disabled={!recipientAddress.trim() || !amount.trim()}
+          >
+            <Text style={styles.sendButtonText}>Send</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -300,5 +346,12 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  keyboardAvoidContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 30,
   },
 });

@@ -26,13 +26,19 @@ export const createTokenTransferTransaction = async (
 
   const senderTokenAccount = await getAssociatedTokenAddress(
     tokenMintPublicKey,
-    fromPublicKey
+    fromPublicKey,
+    true, // allowOwnerOffCurve
+    TOKEN_PROGRAM_ID,
+    ASSOCIATED_TOKEN_PROGRAM_ID
   );
+
+  console.log("Sender token account:", senderTokenAccount);
+
   const recipientTokenAccount = await getAssociatedTokenAddress(
     tokenMintPublicKey,
     toPublicKey
   );
-  console.log("Sender token account:", senderTokenAccount);
+
   console.log("Recipient token account:", recipientTokenAccount);
 
   const amountInBaseUnits = amount * 1_000_000;
@@ -66,10 +72,12 @@ export const createTokenTransferTransaction = async (
     )
   );
 
+  const { blockhash } = await connection.getLatestBlockhash("confirmed");
+
   const message = new TransactionMessage({
     instructions,
-    recentBlockhash: "11111111111111111111111111111111",
-    payerKey: new PublicKey("11111111111111111111111111111112"),
+    recentBlockhash: blockhash,
+    payerKey: fromPublicKey,
   }).compileToV0Message();
 
   return new VersionedTransaction(message);
